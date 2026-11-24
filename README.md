@@ -33,14 +33,16 @@ For each AI crawler it runs two checks:
 | OAI-SearchBot | OpenAI | builds the index for ChatGPT search answers |
 | ChatGPT-User | OpenAI | fetches a page when a user asks ChatGPT about it |
 | ClaudeBot | Anthropic | collects pages for model training |
+| Claude-SearchBot | Anthropic | builds the index for Claude's search answers |
 | Claude-User | Anthropic | fetches a page when a user asks Claude about it |
 | PerplexityBot | Perplexity | builds the index for Perplexity answers |
+| Perplexity-User | Perplexity | fetches a page when a user asks Perplexity about it |
 | Google-Extended | Google | robots.txt token only: use of your pages for Gemini training |
 | Googlebot | Google | Search and AI Overviews |
 | Bingbot | Microsoft | Bing, also used by Copilot and other assistants |
 | CCBot | Common Crawl | open web archive many models are trained on |
 
-Blocking training crawlers (GPTBot, ClaudeBot, Google-Extended, CCBot) is a business choice. Blocking the search and user crawlers (OAI-SearchBot, ChatGPT-User, Claude-User, PerplexityBot, Googlebot, Bingbot) means the assistants can not read your page when someone asks about you.
+Blocking training crawlers (GPTBot, ClaudeBot, Google-Extended, CCBot) is a business choice. Blocking the search and user crawlers (OAI-SearchBot, ChatGPT-User, Claude-SearchBot, Claude-User, PerplexityBot, Perplexity-User, Googlebot, Bingbot) means the assistants can not read your page when someone asks about you.
 
 ## robots.txt you can copy
 
@@ -50,8 +52,10 @@ Allow the assistants to read and cite you, keep training out:
 # AI search and user-triggered fetches: allowed
 User-agent: OAI-SearchBot
 User-agent: ChatGPT-User
+User-agent: Claude-SearchBot
 User-agent: Claude-User
 User-agent: PerplexityBot
+User-agent: Perplexity-User
 Allow: /
 
 # Model training: blocked
@@ -76,6 +80,7 @@ Allow: /
 
 - The live request uses the crawler's user agent from your machine. Real crawlers also come from published IP ranges, and some firewalls check those. A `200` here is a good sign, not a guarantee.
 - Pages that render their text only with JavaScript look empty to most AI crawlers, even when they are allowed. View the page source (not the browser view) to see what a crawler gets.
+- OpenAI and Perplexity say their user-triggered fetchers (ChatGPT-User, Perplexity-User) may not follow robots.txt, because a person asked for the page.
 - User agent strings change. Check the vendors' own docs if a result looks odd.
 
 ## Full check
